@@ -17,21 +17,7 @@ import org.example.model.User;
 
 public class DataStore {
 
-    private static DataStore INSTANCE = new DataStore();
-
-    private List<User> users = new CopyOnWriteArrayList<>();
-    private List<Post> posts = new CopyOnWriteArrayList<>();
-    private List<Comment> comments = new CopyOnWriteArrayList<>();
-    private Set<String> likes = Collections.synchronizedSet(new HashSet<>());
-
-    private Set<String> follows = Collections.synchronizedSet(new HashSet<>());
-
-    private AtomicLong userIdSeq = new AtomicLong(1);
-    private AtomicLong postIdSeq = new AtomicLong(1);
-    private AtomicLong commentIdSeq = new AtomicLong(1);
-
-    private DataStore() {
-    }
+    
 
     public static DataStore getInstance() {
         return INSTANCE;

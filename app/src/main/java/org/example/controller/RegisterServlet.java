@@ -2,6 +2,7 @@ package org.example.controller;
 
 import java.io.IOException;
 
+import org.example.infrastructure.persistence.A_TRIER_DataStoreLists;
 import org.example.util.DataStore;
 
 import jakarta.servlet.ServletException;
@@ -27,20 +28,18 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (username == null || username.isBlank() ||
-                email == null || email.isBlank() ||
-                password == null || password.isBlank()) {
+        if (createUserCase()) {
+            A_TRIER_DataStoreLists storedLists = A_TRIER_DataStoreLists.dataStoreLists;
+            resp.sendRedirect(req.getContextPath() + "/login?success=registered");
+        } else {
             resp.sendRedirect(req.getContextPath() + "/register?error=missing");
             return;
         }
 
-        DataStore store = DataStore.getInstance();
         if (store.existsUserByUsernameOrEmail(username, email)) {
             resp.sendRedirect(req.getContextPath() + "/register?error=exists");
             return;
         }
 
-        store.createUser(username, email, password);
-        resp.sendRedirect(req.getContextPath() + "/login?success=registered");
     }
 }
