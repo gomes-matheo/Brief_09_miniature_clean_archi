@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.example.Core.usecase.ToggleLikeUseCase;
 import org.example.model.User;
 import org.example.util.DataStore;
 
@@ -13,6 +15,10 @@ import java.io.IOException;
 @WebServlet("/like")
 public class LikeServlet extends HttpServlet {
 
+    private final ToggleLikeUseCase toggleLikeUseCase;
+    public LikeServlet() {
+        this.toggleLikeUseCase = new ToggleLikeUseCase((org.example.Core.repository.IntLikeRepository) DataStore.getInstance());
+    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -30,7 +36,7 @@ public class LikeServlet extends HttpServlet {
         }
 
         long postId = Long.parseLong(postIdParam);
-        DataStore.getInstance().toggleLike(loggedUser.getId(), postId);
+        toggleLikeUseCase.execute(loggedUser.getId(), postId);
 
         String referer = req.getHeader("Referer");
         resp.sendRedirect(referer != null ? referer : req.getContextPath() + "/feed");

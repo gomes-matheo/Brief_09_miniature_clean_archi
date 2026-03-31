@@ -6,12 +6,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.model.User;
-import org.example.util.DataStore;
-
+import org.example.Core.usecase.CreatePostUseCase;
+import org.example.infrastructure.persistence.DataStorePostRepository;
 import java.io.IOException;
 
 @WebServlet("/post")
 public class PostServlet extends HttpServlet {
+
+    private final CreatePostUseCase createPostUseCase = new CreatePostUseCase(DataStorePostRepository.getInstance());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -24,12 +26,12 @@ public class PostServlet extends HttpServlet {
         }
 
         String content = req.getParameter("content");
-        if (content == null || content.isBlank()) {
+        try {
+            createPostUseCase.execute(loggedUser, content);
+            resp.sendRedirect(req.getContextPath() + "/feed");
+        } catch (IllegalArgumentException e) {
             resp.sendRedirect(req.getContextPath() + "/feed?error=empty");
-            return;
-        }
 
-        DataStore.getInstance().createPost(loggedUser, content);
-        resp.sendRedirect(req.getContextPath() + "/feed");
+        }
     }
 }

@@ -3,7 +3,7 @@ package org.example.controller;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.example.Core.repository.UserRepository;
+import org.example.Core.repository.IntUserRepository;
 import org.example.Core.usecase.AuthenticateUser;
 import org.example.model.User;
 import org.example.util.DataStore;
@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login?error=missing");
             return;
         }
-AuthenticateUser auth = new AuthenticateUser ((UserRepository) DataStore.getInstance());
+AuthenticateUser auth = new AuthenticateUser ((IntUserRepository) DataStore.getInstance());
 
         Optional<User> found = auth.execute(username, password);
         if (found.isEmpty()) {

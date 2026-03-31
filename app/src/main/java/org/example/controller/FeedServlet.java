@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.example.Core.usecase.GetFeedUseCase;
 import org.example.model.Post;
 import org.example.model.User;
 import org.example.util.DataStore;

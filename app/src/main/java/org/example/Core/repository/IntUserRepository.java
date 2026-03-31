@@ -4,7 +4,7 @@ import java.util.Optional;
 import java.util.List;
 import org.example.model.User;
 
-public interface UserRepository {
+public interface IntUserRepository {
     Optional<User> findByUsername(String username);
 
     void addUser(User user);
