@@ -6,8 +6,14 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+<<<<<<< HEAD
 import org.example.Core.entities.Post;
 import org.example.Core.entities.User;
+=======
+import org.example.Core.usecase.GetFeedUseCase;
+import org.example.model.Post;
+import org.example.model.User;
+>>>>>>> 3c9dbef14bf8737ff8be19c977232a7ca36fa1ff
 import org.example.util.DataStore;
 
 import java.io.IOException;
