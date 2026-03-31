@@ -3,9 +3,9 @@ package org.example.infrastructure.persistence;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.example.model.Comment;
+import org.example.Core.entities.Comment;
 
-public class DataStoreCommentList {
+public class CommentRepository {
     private List<Comment> comments = new CopyOnWriteArrayList<>();
 
     public void addComment(Comment comment) {

@@ -4,9 +4,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.example.model.User;
+import org.example.Core.entities.User;
 
-public class DataStoreFollowerList {
+public class FollowerRepository {
 
     private Set<User> follows = Collections.synchronizedSet(new HashSet<>());
 

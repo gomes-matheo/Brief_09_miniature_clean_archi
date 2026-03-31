@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.Core.entities;
 
 import java.time.LocalDateTime;
 
@@ -41,10 +41,6 @@ public class Post {
 
     public int getLikeCount() {
         return likeCount;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setOwner(User owner) {

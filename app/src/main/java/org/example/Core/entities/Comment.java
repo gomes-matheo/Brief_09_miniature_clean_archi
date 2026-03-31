@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.Core.entities;
 
 import java.time.LocalDateTime;
 
@@ -31,14 +31,6 @@ public class Comment {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setPostId(long postId) {
-        this.postId = postId;
     }
 
     public void setOwner(User owner) {

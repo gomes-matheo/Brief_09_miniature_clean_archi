@@ -11,9 +11,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import org.example.model.Comment;
-import org.example.model.Post;
-import org.example.model.User;
+import org.example.Core.entities.Comment;
+import org.example.Core.entities.Post;
+import org.example.Core.entities.User;
 
 public class DataStore {
 

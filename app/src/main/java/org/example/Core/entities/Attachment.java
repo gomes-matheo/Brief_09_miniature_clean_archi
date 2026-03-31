@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.Core.entities;
 
 public class Attachment {
 
@@ -48,10 +48,6 @@ public class Attachment {
 
     public Long getPostRef() {
         return postRef;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setOwnerId(long ownerId) {

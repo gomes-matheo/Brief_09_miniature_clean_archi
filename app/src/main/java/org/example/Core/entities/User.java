@@ -1,4 +1,4 @@
-package org.example.model;
+package org.example.Core.entities;
 
 import java.time.LocalDateTime;
 
@@ -37,10 +37,6 @@ public class User {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setUsername(String username) {

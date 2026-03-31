@@ -28,7 +28,7 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (createUserCase()) {
+        if (createUserSuccess()) {
             A_TRIER_DataStoreLists storedLists = A_TRIER_DataStoreLists.dataStoreLists;
             resp.sendRedirect(req.getContextPath() + "/login?success=registered");
         } else {

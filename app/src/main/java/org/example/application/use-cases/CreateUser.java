@@ -1,13 +1,21 @@
-import org.example.model.User;
+import org.example.Core.entities.User;
+import org.example.Core.exceptions.EntityAlreadyExistsException;
+import org.example.Core.repository.IUserRepository;
 
 public class CreateUser {
-    public boolean createUserCase (String username, String email, String password) {
-        
+    private IUserRepository userRepo;
+
+    private boolean isEmailAvailable(String email) {
+        return userRepo.getUsers().stream().anyMatch(u -> u.getUsername().equals(email));
+    }
+
+    public void createUserSuccess (String username, String email, String password) {
         if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            return false;
+            throw new IllegalArgumentException("The registering form isn't complete !");
+        } else if (!isEmailAvailable(email)) {
+            throw new EntityAlreadyExistsException("This email already exists !");
+        } else {
+            new User(username, email, password);
         }
-        
-        new User(id, username, email, password);
-        return true;
     }
 }

@@ -1,13 +1,13 @@
 package org.example.Core.usecase;
 import java.util.Optional;
 
-import org.example.Core.repository.UserRepository;
-import org.example.model.User;
+import org.example.Core.entities.User;
+import org.example.Core.repository.IUserRepository;
 
 public class AuthenticateUser {
-    private final UserRepository repository;
+    private final IUserRepository repository;
 
-    public AuthenticateUser(UserRepository repository) {
+    public AuthenticateUser(IUserRepository repository) {
         this.repository = repository;
     }
 
