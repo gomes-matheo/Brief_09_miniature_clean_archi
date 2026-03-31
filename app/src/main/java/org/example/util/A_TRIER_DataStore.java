@@ -11,15 +11,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import org.example.Core.entities.Comment;
-import org.example.Core.entities.Post;
-import org.example.Core.entities.User;
+import org.example.core.entities.Comment;
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
 
-public class DataStore {
+public class A_TRIER_DataStore {
 
     
 
-    public static DataStore getInstance() {
+    public static A_TRIER_DataStore getInstance() {
         return INSTANCE;
     }
 

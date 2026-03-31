@@ -1,9 +1,15 @@
-import org.example.Core.entities.User;
-import org.example.Core.exceptions.EntityAlreadyExistsException;
-import org.example.Core.repository.IUserRepository;
+package org.example.application.usecases;
 
-public class CreateUser {
-    private IUserRepository userRepo;
+import org.example.core.entities.User;
+import org.example.core.exceptions.EntityAlreadyExistsException;
+import org.example.core.repository.IUserRepository;
+
+public class CreateUserCase {
+    private final IUserRepository userRepo;
+
+    public CreateUserCase(IUserRepository userRepository) {
+        userRepo = userRepository;
+    }
 
     private boolean isEmailAvailable(String email) {
         return userRepo.getUsers().stream().anyMatch(u -> u.getUsername().equals(email));

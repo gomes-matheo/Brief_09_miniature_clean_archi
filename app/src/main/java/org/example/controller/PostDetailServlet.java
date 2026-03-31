@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.example.Core.entities.Comment;
-import org.example.Core.entities.Post;
-import org.example.Core.entities.User;
-import org.example.util.DataStore;
+import org.example.core.entities.Comment;
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
+import org.example.util.A_TRIER_DataStore;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +42,7 @@ public class PostDetailServlet extends HttpServlet {
             return;
         }
 
-        DataStore store = DataStore.getInstance();
+        A_TRIER_DataStore store = A_TRIER_DataStore.getInstance();
         Optional<Post> postOpt = store.findPostById(postId);
         if (postOpt.isEmpty()) {
             resp.sendRedirect(req.getContextPath() + "/feed");
@@ -80,7 +80,7 @@ public class PostDetailServlet extends HttpServlet {
         }
 
         long postId = Long.parseLong(idParam);
-        DataStore.getInstance().createComment(postId, loggedUser, content);
+        A_TRIER_DataStore.getInstance().createComment(postId, loggedUser, content);
         resp.sendRedirect(req.getContextPath() + "/feed");
     }
 }

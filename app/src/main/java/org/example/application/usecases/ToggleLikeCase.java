@@ -1,9 +1,11 @@
-import org.example.Core.repository.ILikeRepository;
+package org.example.application.usecases;
 
-public class ToggleLikeUseCase {
+import org.example.core.repository.ILikeRepository;
+
+public class ToggleLikeCase {
     private final ILikeRepository likeRepository;
 
-    public ToggleLikeUseCase(ILikeRepository likeRepository) {
+    public ToggleLikeCase(ILikeRepository likeRepository) {
         this.likeRepository = likeRepository;
     }
 

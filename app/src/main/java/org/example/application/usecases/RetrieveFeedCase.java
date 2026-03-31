@@ -1,12 +1,14 @@
+package org.example.application.usecases;
+
 import java.util.List;
 
-import org.example.Core.entities.Post;
-import org.example.Core.repository.IPostRepository;
+import org.example.core.entities.Post;
+import org.example.core.repository.IPostRepository;
 
-public class GetFeedUseCase {
+public class RetrieveFeedCase {
     private final IPostRepository postRepository;
 
-    public GetFeedUseCase(IPostRepository postRepository) {
+    public RetrieveFeedCase(IPostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

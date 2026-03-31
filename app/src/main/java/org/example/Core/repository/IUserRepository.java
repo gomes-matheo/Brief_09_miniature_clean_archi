@@ -1,9 +1,9 @@
-package org.example.Core.repository;
-
-import org.example.Core.entities.User;
+package org.example.core.repository;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.example.core.entities.User;
 
     public interface IUserRepository {
     Optional<User> findByUsername(String username);

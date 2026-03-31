@@ -2,10 +2,11 @@ package org.example.infrastructure.persistence;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.ArrayList;
 
-import org.example.Core.entities.User;
-import org.example.Core.repository.IUserRepository;
+import org.example.core.entities.User;
+import org.example.core.repository.IUserRepository;
+
+import java.util.ArrayList;
 
 public class UserRepository implements IUserRepository{
     private List<User> users = new ArrayList<>();

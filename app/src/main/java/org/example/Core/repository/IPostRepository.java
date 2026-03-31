@@ -1,8 +1,8 @@
-package org.example.Core.repository;
+package org.example.core.repository;
 import java.util.List;
 
-import org.example.Core.entities.Post;
-import org.example.Core.entities.User;
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
 
 public interface IPostRepository {
     void save(User author, String content);

@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.example.Core.entities.User;
-import org.example.Core.usecase.CreatePostUseCase;
-import org.example.util.DataStore;
+import org.example.core.entities.User;
+import org.example.core.usecase.CreatePostUseCase;
+import org.example.util.A_TRIER_DataStore;
 
 import java.io.IOException;
 

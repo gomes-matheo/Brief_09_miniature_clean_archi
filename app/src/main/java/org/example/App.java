@@ -4,11 +4,10 @@
 package org.example;
 
 import org.example.infrastructure.config.TomcatServerStart;
-import org.example.infrastructure.persistence.A_TRIER_DataStoreLists;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        A_TRIER_DataStoreLists dataStoreLists = new A_TRIER_DataStoreLists();
+
 
         // AT THE END OF THE PROGRAM
         TomcatServerStart

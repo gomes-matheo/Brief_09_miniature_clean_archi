@@ -1,4 +1,4 @@
-package org.example.Core.repository;
+package org.example.core.repository;
 
 public interface ILikeRepository {
     

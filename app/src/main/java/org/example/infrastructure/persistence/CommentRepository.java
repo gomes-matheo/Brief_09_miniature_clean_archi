@@ -3,9 +3,10 @@ package org.example.infrastructure.persistence;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.example.Core.entities.Comment;
+import org.example.core.entities.Comment;
+import org.example.core.repository.ICommentRepository;
 
-public class CommentRepository {
+public class CommentRepository implements ICommentRepository {
     private List<Comment> comments = new CopyOnWriteArrayList<>();
     private static final CommentRepository COMMENT_REPO_INSTANCE = new CommentRepository();
 

@@ -2,9 +2,12 @@ package org.example.infrastructure.persistence;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import org.example.Core.entities.Post;
 
-public class PostRepository {
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
+import org.example.core.repository.IPostRepository;
+
+public class PostRepository implements IPostRepository{
     
     private List<Post> posts = new CopyOnWriteArrayList<>();
     private static final PostRepository POST_REPO_INSTANCE = new PostRepository();
@@ -25,6 +28,12 @@ public class PostRepository {
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    @Override
+    public void save(User author, String content) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
       
 }

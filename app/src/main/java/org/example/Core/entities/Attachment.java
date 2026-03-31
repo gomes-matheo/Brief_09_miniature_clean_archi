@@ -1,4 +1,4 @@
-package org.example.Core.entities;
+package org.example.core.entities;
 
 public class Attachment {
 

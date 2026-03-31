@@ -4,9 +4,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.example.Core.entities.User;
+import org.example.core.entities.User;
+import org.example.core.repository.IFollowerRepository;
 
-public class FollowerRepository {
+public class FollowerRepository implements IFollowerRepository{
 
     private Set<User> follows = Collections.synchronizedSet(new HashSet<>());
     private static final FollowerRepository FOLLOWER_REPO_INSTANCE = new FollowerRepository();
