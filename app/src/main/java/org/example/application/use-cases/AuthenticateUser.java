@@ -1,4 +1,3 @@
-package org.example.Core.usecase;
 import java.util.Optional;
 
 import org.example.Core.entities.User;

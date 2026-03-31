@@ -1,14 +1,12 @@
-package org.example.Core.usecase;
-
 import java.util.List;
 
-import org.example.Core.repository.IntPostRepository;
-import org.example.model.Post;
+import org.example.Core.entities.Post;
+import org.example.Core.repository.IPostRepository;
 
 public class GetFeedUseCase {
-    private final IntPostRepository postRepository;
+    private final IPostRepository postRepository;
 
-    public GetFeedUseCase(IntPostRepository postRepository) {
+    public GetFeedUseCase(IPostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

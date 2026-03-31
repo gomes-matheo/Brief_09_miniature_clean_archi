@@ -1,6 +1,6 @@
 package org.example.Core.repository;
 
-public interface IntLikeRepository {
+public interface ILikeRepository {
     
         void toggleLike(long userId, long postId);
 }

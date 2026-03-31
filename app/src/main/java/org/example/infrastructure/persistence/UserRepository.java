@@ -1,6 +1,7 @@
 package org.example.infrastructure.persistence;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.ArrayList;
 
 import org.example.Core.entities.User;
@@ -26,5 +27,11 @@ public class UserRepository implements IUserRepository{
 
     public List<User> getUsers() {
         return users;
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByUsername'");
     }
 }

@@ -1,12 +1,10 @@
-package org.example.Core.usecase;
-
-import org.example.Core.repository.IntPostRepository;
-import org.example.model.User;
+import org.example.Core.entities.User;
+import org.example.Core.repository.IPostRepository;
 
 public class CreatePostUseCase {
-    private final IntPostRepository postRepository;
+    private final IPostRepository postRepository;
 
-    public CreatePostUseCase(IntPostRepository postRepository) {
+    public CreatePostUseCase(IPostRepository postRepository) {
         this.postRepository = postRepository;
     }
 
