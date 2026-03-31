@@ -9,8 +9,15 @@ import org.example.Core.entities.User;
 public class FollowerRepository {
 
     private Set<User> follows = Collections.synchronizedSet(new HashSet<>());
+    private static final FollowerRepository FOLLOWER_REPO_INSTANCE = new FollowerRepository();
 
-        public void addFollower(User user) {
+    private FollowerRepository() {}
+
+    public static FollowerRepository getInstance() {
+        return FOLLOWER_REPO_INSTANCE;
+    }
+    
+    public void addFollower(User user) {
         follows.add(user);
     }
 
