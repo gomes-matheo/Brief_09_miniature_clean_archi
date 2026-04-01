@@ -2,8 +2,8 @@ package org.example.controller;
 
 import java.io.IOException;
 
-import org.example.infrastructure.persistence.A_TRIER_DataStoreLists;
-import org.example.util.A_TRIER_DataStore;
+import org.example.application.usecases.CreateUserCase;
+import org.example.infrastructure.persistence.UserRepository;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,18 +28,18 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (createUserSuccess()) {
-            A_TRIER_DataStoreLists storedLists = A_TRIER_DataStoreLists.dataStoreLists;
-            resp.sendRedirect(req.getContextPath() + "/login?success=registered");
-        } else {
+        if (username == null || email == null || password == null ||
+                username.isBlank() || email.isBlank() || password.isBlank()) {
             resp.sendRedirect(req.getContextPath() + "/register?error=missing");
             return;
         }
 
-        if (store.existsUserByUsernameOrEmail(username, email)) {
+        CreateUserCase createUserCase = new CreateUserCase(UserRepository.getInstance());
+        try {
+            createUserCase.createUserSuccess(username, email, password);
+            resp.sendRedirect(req.getContextPath() + "/login?success=registered");
+        } catch (Exception e) {
             resp.sendRedirect(req.getContextPath() + "/register?error=exists");
-            return;
         }
-
     }
 }

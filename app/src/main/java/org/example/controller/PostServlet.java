@@ -1,21 +1,21 @@
 package org.example.controller;
 
+import java.io.IOException;
+
+import org.example.application.usecases.CreatePostCase;
+import org.example.core.entities.User;
+import org.example.infrastructure.persistence.PostRepository;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.example.core.entities.User;
-import org.example.core.usecase.CreatePostUseCase;
-import org.example.util.A_TRIER_DataStore;
-
-import java.io.IOException;
-
 @WebServlet("/post")
 public class PostServlet extends HttpServlet {
 
-    private final CreatePostUseCase createPostUseCase = new CreatePostUseCase(DataStorePostRepository.getInstance());
+    private final CreatePostCase createPostUseCase = new CreatePostCase(PostRepository.getInstance());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)

@@ -1,27 +1,22 @@
 package org.example.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.example.application.usecases.RetrieveFeedCase;
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
+import org.example.infrastructure.persistence.PostRepository;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-<<<<<<< HEAD
-import org.example.Core.entities.Post;
-import org.example.Core.entities.User;
-=======
-import org.example.Core.usecase.GetFeedUseCase;
-import org.example.model.Post;
-import org.example.model.User;
->>>>>>> 3c9dbef14bf8737ff8be19c977232a7ca36fa1ff
-import org.example.util.DataStore;
-
-import java.io.IOException;
-import java.util.List;
-
 @WebServlet("/feed")
 public class FeedServlet extends HttpServlet {
-
+    private final RetrieveFeedCase getFeedUseCase = new RetrieveFeedCase(PostRepository.getInstance());
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -36,14 +31,8 @@ public class FeedServlet extends HttpServlet {
         if (mode == null)
             mode = "reco";
 
-        DataStore store = DataStore.getInstance();
-        List<Post> posts;
-        if ("abonnements".equals(mode)) {
-            posts = store.getPostsFromFollowed(loggedUser.getId());
-        } else {
-            posts = store.getAllPosts();
-        }
-        posts.forEach(p -> p.setLikeCount(store.likeCount(p.getId())));
+        List<Post> posts = getFeedUseCase.execute(loggedUser.getId(), mode);
+      
 
         req.setAttribute("posts", posts);
         req.setAttribute("mode", mode);

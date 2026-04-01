@@ -1,28 +1,21 @@
 package org.example.controller;
 
+import java.io.IOException;
+
+import org.example.application.usecases.ToggleLikeCase;
+import org.example.core.entities.User;
+import org.example.infrastructure.persistence.LikeRepository;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-<<<<<<< HEAD
-import org.example.Core.entities.User;
-=======
-import org.example.Core.usecase.ToggleLikeUseCase;
-import org.example.model.User;
->>>>>>> 3c9dbef14bf8737ff8be19c977232a7ca36fa1ff
-import org.example.util.DataStore;
-
-import java.io.IOException;
-
 @WebServlet("/like")
 public class LikeServlet extends HttpServlet {
 
-    private final ToggleLikeUseCase toggleLikeUseCase;
-    public LikeServlet() {
-        this.toggleLikeUseCase = new ToggleLikeUseCase((org.example.Core.repository.IntLikeRepository) DataStore.getInstance());
-    }
+    private final ToggleLikeCase toggleLikeUseCase = new ToggleLikeCase(LikeRepository.getInstance());
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

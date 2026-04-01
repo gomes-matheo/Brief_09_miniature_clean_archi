@@ -3,14 +3,9 @@ package org.example.controller;
 import java.io.IOException;
 import java.util.Optional;
 
-<<<<<<< HEAD
-import org.example.Core.entities.User;
-import org.example.Core.repository.IUserRepository;
-=======
-import org.example.Core.repository.IntUserRepository;
->>>>>>> 3c9dbef14bf8737ff8be19c977232a7ca36fa1ff
-import org.example.Core.usecase.AuthenticateUser;
-import org.example.util.DataStore;
+import org.example.application.usecases.AuthenticateUserCase;
+import org.example.core.entities.User;
+import org.example.infrastructure.persistence.UserRepository;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -40,11 +35,7 @@ public class LoginServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/login?error=missing");
             return;
         }
-<<<<<<< HEAD
-AuthenticateUser auth = new AuthenticateUser ((IUserRepository) DataStore.getInstance());
-=======
-AuthenticateUser auth = new AuthenticateUser ((IntUserRepository) DataStore.getInstance());
->>>>>>> 3c9dbef14bf8737ff8be19c977232a7ca36fa1ff
+        AuthenticateUserCase auth = new AuthenticateUserCase(UserRepository.getInstance());
 
         Optional<User> found = auth.execute(username, password);
         if (found.isEmpty()) {
