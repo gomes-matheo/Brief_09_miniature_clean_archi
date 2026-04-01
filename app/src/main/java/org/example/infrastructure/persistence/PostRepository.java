@@ -1,7 +1,9 @@
 package org.example.infrastructure.persistence;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import org.example.core.entities.Post;
 import org.example.core.entities.User;
@@ -28,6 +30,19 @@ public class PostRepository implements IPostRepository{
 
     public List<Post> getPosts() {
         return posts;
+    }
+
+    @Override
+    public List<Post> findAll() {
+        return posts.stream()
+            .filter(p -> !p.isDraft())
+            .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Post> findByFollowed(long userId) {
+        return List.of();
     }
 
     @Override

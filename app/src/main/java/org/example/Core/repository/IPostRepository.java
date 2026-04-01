@@ -8,5 +8,7 @@ public interface IPostRepository {
     void save(User author, String content);
     void addPost(Post post);
     void removePost(Post post);
-    List <Post> getPosts();
+    List<Post> getPosts();
+    List<Post> findAll();
+    List<Post> findByFollowed(long userId);
 }

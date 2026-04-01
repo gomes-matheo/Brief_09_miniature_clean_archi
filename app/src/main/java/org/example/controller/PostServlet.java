@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.example.application.usecases.CreatePostCase;
 import org.example.core.entities.User;
 import org.example.infrastructure.persistence.PostRepository;
+import org.example.presentation.dto.UserDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,10 +23,11 @@ public class PostServlet extends HttpServlet {
             throws ServletException, IOException {
 
         User loggedUser = (User) req.getSession().getAttribute("loggedUser");
-        if (loggedUser == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
+
+        UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+
+        req.setAttribute("user", userView);
+
 
         String content = req.getParameter("content");
         try {
