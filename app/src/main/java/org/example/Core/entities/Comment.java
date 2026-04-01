@@ -6,11 +6,17 @@ public class Comment {
 
     private long id;
     private long postId;
+    private Post postParent;
     private User owner;
     private String content;
     private LocalDateTime createdAt;
 
     public Comment() {
+        
+    }
+
+    public Post getPostParent () {
+        return this.postParent;
     }
 
     public long getId() {

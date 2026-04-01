@@ -1,21 +1,24 @@
 package org.example.infrastructure.persistence;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 import org.example.core.entities.Post;
 import org.example.core.entities.User;
+import org.example.core.repository.IFollowerRepository;
 import org.example.core.repository.IPostRepository;
 
 public class PostRepository implements IPostRepository{
     
     private List<Post> posts = new CopyOnWriteArrayList<>();
-    private static final PostRepository POST_REPO_INSTANCE = new PostRepository();
+    private final IFollowerRepository followerRepository;
 
-    private PostRepository() {}
-
-    public static PostRepository getInstance() {
-        return POST_REPO_INSTANCE;
+    public PostRepository(IFollowerRepository followerRepository) {
+        this.followerRepository = followerRepository;
     }
 
     public void addPost(Post post) {
@@ -35,5 +38,23 @@ public class PostRepository implements IPostRepository{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
-      
+
+    @Override
+    public Optional<Post> findPostById(long id) {
+        return posts.stream().filter(p -> p.getId() == id).findFirst();
+    }
+
+    @Override
+    public List<Post> getPostsFromUser() {
+        return posts.stream()
+                .filter(p -> !p.isDraft())
+                .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Post> getPostsFromFollowed(User subscribedUser) {
+        Set<User> followed = followerRepository.getFollows(subscribedUser);
+        return posts.stream().filter(p -> followed.contains(p.getOwner().equals(followed))).toList();
+    }
 }

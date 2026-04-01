@@ -1,7 +1,7 @@
 package org.example.infrastructure.persistence;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.example.core.entities.User;
@@ -9,24 +9,24 @@ import org.example.core.repository.IFollowerRepository;
 
 public class FollowerRepository implements IFollowerRepository{
 
-    private Set<User> follows = Collections.synchronizedSet(new HashSet<>());
-    private static final FollowerRepository FOLLOWER_REPO_INSTANCE = new FollowerRepository();
+    private Map<User, Set<User>> followers = new HashMap<>();
 
-    private FollowerRepository() {}
-
-    public static FollowerRepository getInstance() {
-        return FOLLOWER_REPO_INSTANCE;
+    public FollowerRepository() {
+        
     }
     
-    public void addFollower(User user) {
-        follows.add(user);
+    @Override
+    public void addFollower(User currentUser, User userToFollow) {
+        followers.get(currentUser).add(userToFollow);
+    }
+    
+    @Override
+    public void removeFollower(User currentUser, User userToUnfollow) {
+        followers.get(currentUser).remove(userToUnfollow);
     }
 
-    public void removeFollower(User user) {
-        follows.remove(user);
-    }
-
-    public Set<User> getFollows() {
-        return follows;
+    @Override
+    public Set<User> getFollows(User currentUser) {
+        return followers.get(currentUser);
     }
 }

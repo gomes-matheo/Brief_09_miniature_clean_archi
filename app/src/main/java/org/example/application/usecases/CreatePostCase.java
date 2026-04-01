@@ -10,7 +10,7 @@ public class CreatePostCase {
         this.postRepository = postRepository;
     }
 
-    public void execute(User author, String content) throws IllegalArgumentException {
+    public void sendPost(User author, String content) throws IllegalArgumentException {
 
         if (content == null || content.isBlank()) {
             throw new IllegalArgumentException("Le contenu du post ne peut pas être vide.");

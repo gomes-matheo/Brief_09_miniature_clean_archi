@@ -2,8 +2,8 @@ package org.example.controller;
 
 import java.io.IOException;
 
-import org.example.application.usecases.CreateUserCase;
-import org.example.infrastructure.persistence.UserRepository;
+import org.example.core.exceptions.EntityAlreadyExistsException;
+import org.example.infrastructure.config.ServiceLocator;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,7 +16,7 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
     }
 
@@ -28,18 +28,21 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        if (username == null || email == null || password == null ||
-                username.isBlank() || email.isBlank() || password.isBlank()) {
-            resp.sendRedirect(req.getContextPath() + "/register?error=missing");
-            return;
-        }
+        ServiceLocator sl = ServiceLocator.getInstance();
 
-        CreateUserCase createUserCase = new CreateUserCase(UserRepository.getInstance());
         try {
-            createUserCase.createUserSuccess(username, email, password);
-            resp.sendRedirect(req.getContextPath() + "/login?success=registered");
+            sl.getCreateUserCase().createUserSuccess(username, email, password);
+        } catch (IllegalArgumentException e) {
+            resp.sendError(403, "Form was empty");
+            return;
+        } catch (EntityAlreadyExistsException e) {
+            resp.sendError(403, "User already exists");
+            return;
         } catch (Exception e) {
-            resp.sendRedirect(req.getContextPath() + "/register?error=exists");
-        }
+            resp.sendError(405, "Something wrong happened");
+            return;
+        } 
+        
+        resp.sendRedirect(req.getContextPath() + "/login?success=registered");
     }
 }

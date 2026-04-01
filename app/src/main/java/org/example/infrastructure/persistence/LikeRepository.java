@@ -1,36 +1,35 @@
 package org.example.infrastructure.persistence;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
 import org.example.core.repository.ILikeRepository;
 
 public class LikeRepository implements ILikeRepository {
-    private Set<String> likes = Collections.synchronizedSet(new HashSet<>());
-    private static final LikeRepository LIKE_REPO_INSTANCE = new LikeRepository();
+    private Map<Post, Set<User>> likes = new HashMap<>();
 
-    private LikeRepository() {}
+    public LikeRepository() {}
 
-    public static LikeRepository getInstance() {
-        return LIKE_REPO_INSTANCE;
-    }
-
-    public void addLike() {
-        likes.add(null);
-    }
-
-    public void removeLike() {
-        likes.remove(null);
-    }
-
-    public Set<String> getLikes() {
-        return likes;
+    @Override
+    public void addLike(Post currentPost, User currentUser) {
+        likes.get(currentPost).add(currentUser);
     }
 
     @Override
-    public void toggleLike(long userId, long postId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toggleLike'");
+    public void removeLike(Post currentPost, User currentUser) {
+        likes.get(currentPost).remove(currentUser);
+    }
+
+    @Override
+    public int getLikes(Post currentPost) {
+        return likes.get(currentPost).size();
+    }
+
+    @Override
+    public Set<User> getUsersByLiked(Post currentPost) {
+        return likes.get(currentPost);
     }
 }

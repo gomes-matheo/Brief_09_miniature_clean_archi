@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.core.entities.Comment;
 import org.example.core.entities.Post;
 import org.example.core.entities.User;
+import org.example.infrastructure.persistence.PostRepository;
 import org.example.util.A_TRIER_DataStore;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class PostDetailServlet extends HttpServlet {
             return;
         }
 
-        A_TRIER_DataStore store = A_TRIER_DataStore.getInstance();
+        PostRepository store = PostRepository.getInstance();
         Optional<Post> postOpt = store.findPostById(postId);
         if (postOpt.isEmpty()) {
             resp.sendRedirect(req.getContextPath() + "/feed");
