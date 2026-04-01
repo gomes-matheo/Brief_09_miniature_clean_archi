@@ -1,20 +1,20 @@
 package org.example.controller;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import org.example.core.entities.Comment;
+import org.example.core.entities.Post;
+import org.example.core.entities.User;
+import org.example.presentation.dto.UserDTO;
+import org.example.util.A_TRIER_DataStore;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import org.example.core.entities.Comment;
-import org.example.core.entities.Post;
-import org.example.core.entities.User;
-import org.example.infrastructure.persistence.PostRepository;
-import org.example.util.A_TRIER_DataStore;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @WebServlet("/post-detail")
 public class PostDetailServlet extends HttpServlet {
@@ -23,11 +23,12 @@ public class PostDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        User loggedUser = (User) req.getSession().getAttribute("loggedUser");
-        if (loggedUser == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
+       User loggedUser = (User) req.getSession().getAttribute("loggedUser");
+
+        UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+
+        req.setAttribute("user", userView);
+
 
         String idParam = req.getParameter("id");
         if (idParam == null || idParam.isBlank()) {

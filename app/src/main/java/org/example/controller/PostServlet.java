@@ -3,6 +3,7 @@ package org.example.controller;
 import java.io.IOException;
 
 import org.example.core.entities.User;
+import org.example.presentation.dto.UserDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -22,12 +23,11 @@ public class PostServlet extends HttpServlet {
         ServiceLocator sl = ServiceLocator.getInstance();
 
         User loggedUser = (User) req.getSession().getAttribute("loggedUser");
-        
-        if (loggedUser == null) {
-            // resp.sendError(403, "User must be logged in");
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
+
+        UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+
+        req.setAttribute("user", userView);
+
 
         String content = req.getParameter("content");
         try {

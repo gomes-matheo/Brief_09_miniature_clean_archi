@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.example.core.entities.Post;
 import org.example.core.repository.IPostRepository;
+import org.example.presentation.dto.PostDTO;
+import org.example.util.PostMapper;
 
 public class RetrieveFeedCase {
     private final IPostRepository postRepository;
@@ -12,18 +14,13 @@ public class RetrieveFeedCase {
         this.postRepository = postRepository;
     }
 
-    public List<Post> execute(long userId, String mode) {
-        return postRepository.getPosts();
-    }
+    public List<PostDTO> execute(long userId, String mode) {
+        List<Post> posts = "abonnements".equals(mode)
+            ? postRepository.findByFollowed(userId)
+            : postRepository.findAll();
 
-    public List<Post> execute(String mode) {
-        List<Post> posts = postRepository.getPosts();
-        if ("abonnements".equals(mode)) {
-            posts = postRepository.getPosts();
-        } else {
-            posts = postRepository.getPosts();
-        }
-        return posts;
+        return posts.stream()
+            .map(PostMapper::toDTO)
+            .toList();
     }
-
 }

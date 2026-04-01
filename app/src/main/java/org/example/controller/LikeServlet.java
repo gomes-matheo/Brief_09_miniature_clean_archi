@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.example.application.usecases.ToggleLikeCase;
 import org.example.core.entities.User;
 import org.example.infrastructure.persistence.LikeRepository;
+import org.example.presentation.dto.UserDTO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,11 +21,12 @@ public class LikeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        User loggedUser = (User) req.getSession().getAttribute("loggedUser");
-        if (loggedUser == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
+       User loggedUser = (User) req.getSession().getAttribute("loggedUser");
+
+        UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+
+        req.setAttribute("user", userView);
+
 
         String postIdParam = req.getParameter("postId");
         if (postIdParam == null) {

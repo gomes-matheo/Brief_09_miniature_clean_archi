@@ -57,8 +57,8 @@
                                 <c:forEach var="post" items="${posts}">
                                     <article class="post-card">
                                         <header class="post-header">
-                                            <strong>@${post.owner.username}</strong>
-                                            <span class="post-date">${post.createdAt}</span>
+                                            <strong>@${post.owner}</strong>
+                                            <span class="post-date">${post.formattedDate}</span>
                                         </header>
                                         <p class="post-content">${post.content}</p>
                                         <footer class="post-actions">
