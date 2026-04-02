@@ -2,11 +2,9 @@ package org.example.controller;
 
 import java.io.IOException;
 import java.util.List;
-
-import org.example.application.usecases.RetrieveFeedCase;
 import org.example.core.entities.User;
 import org.example.presentation.dto.PostDTO;
-import org.example.infrastructure.persistence.PostRepository;
+import org.example.infrastructure.config.ServiceLocator;
 import org.example.presentation.dto.UserDTO;
 
 import jakarta.servlet.ServletException;
@@ -17,15 +15,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/feed")
 public class FeedServlet extends HttpServlet {
-    private final RetrieveFeedCase getFeedUseCase = new RetrieveFeedCase(PostRepository.getInstance());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        User loggedUser = (User) req.getSession().getAttribute("loggedUser");
-
-        UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+        final User loggedUser = (User) req.getSession().getAttribute("loggedUser");
+        final UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+        final ServiceLocator sl = ServiceLocator.getInstance();
 
         req.setAttribute("user", userView);
 
@@ -33,7 +30,7 @@ public class FeedServlet extends HttpServlet {
         if (mode == null)
             mode = "reco";
 
-        List<PostDTO> posts = getFeedUseCase.execute(loggedUser.getId(), mode);
+        List<PostDTO> posts = sl.getRetrieveFeedCase().execute(loggedUser, mode);
 
         req.setAttribute("posts", posts);
         req.setAttribute("mode", mode);

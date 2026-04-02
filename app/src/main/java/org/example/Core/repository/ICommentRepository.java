@@ -7,12 +7,11 @@ import org.example.core.entities.Post;
 
 public interface ICommentRepository {
 
-    List<Comment> getCommentsFromPost(Post post);
+    void addComment(Post fromPost, Comment comment);
 
-    void addComment(Comment comment);
+    void removeComment(Post fromPost, Comment comment);
 
-    void removeComment(Comment comment);
+    List<Comment> getCommentsFromPost(Post fromPost);
 
-    List<Comment> getComments();
 
 }

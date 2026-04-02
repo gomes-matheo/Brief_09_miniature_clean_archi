@@ -1,38 +1,34 @@
 package org.example.infrastructure.persistence;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.Set;
 
 import org.example.core.entities.Comment;
 import org.example.core.entities.Post;
 import org.example.core.repository.ICommentRepository;
 
 public class CommentRepository implements ICommentRepository {
-    private List<Comment> comments = new CopyOnWriteArrayList<>();
+    private Map<Post, Set<Comment>> comments = new HashMap<>();
 
     public CommentRepository() {}
 
     @Override
-    public void addComment(Comment comment) {
-        comments.add(comment);
+    public void addComment(Post fromPost, Comment comment) {
+        comments.get(fromPost).add(comment);
     }
 
     @Override
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
+    public void removeComment(Post fromPost, Comment comment) {
+        comments.get(fromPost).remove(comment);
     }
 
     @Override
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    @Override
-    public List<Comment> getCommentsFromPost(Post post) {
-        return comments.stream()
-                .filter(c -> c.getPostParent() == post)
-                .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
-                .toList();
+    public List<Comment> getCommentsFromPost(Post fromPost) {
+        return comments.get(fromPost).stream()
+        .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
+        .toList();
     }
 }

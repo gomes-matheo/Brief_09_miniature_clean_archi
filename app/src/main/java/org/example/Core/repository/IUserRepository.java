@@ -10,4 +10,5 @@ import org.example.core.entities.User;
     void addUser(User user);
     void removeUser(User user);
     List<User> getUsers();
+    Optional<User> findById(long id);
 }

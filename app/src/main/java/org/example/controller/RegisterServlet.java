@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/register")
 public class RegisterServlet extends HttpServlet {
-
+    
+    private final ServiceLocator sl = ServiceLocator.getInstance();
+    
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
@@ -28,7 +30,6 @@ public class RegisterServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        ServiceLocator sl = ServiceLocator.getInstance();
 
         try {
             sl.getCreateUserCase().createUserSuccess(username, email, password);

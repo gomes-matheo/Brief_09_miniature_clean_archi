@@ -3,9 +3,8 @@ package org.example.controller;
 import java.io.IOException;
 import java.util.Optional;
 
-import org.example.application.usecases.AuthenticateUserCase;
 import org.example.core.entities.User;
-import org.example.infrastructure.persistence.UserRepository;
+import org.example.infrastructure.config.ServiceLocator;
 import org.example.presentation.dto.UserDTO;
 
 import jakarta.servlet.ServletException;
@@ -32,14 +31,13 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         User loggedUser = (User) req.getSession().getAttribute("loggedUser");
-
         UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+
+        ServiceLocator sl = ServiceLocator.getInstance();
 
         req.setAttribute("user", userView);
 
-        AuthenticateUserCase auth = new AuthenticateUserCase(UserRepository.getInstance());
-
-        Optional<User> found = auth.execute(username, password);
+        Optional<User> found = sl.getAuthenticateUserCase().execute(username, password);
         if (found.isEmpty()) {
             resp.sendRedirect(req.getContextPath() + "/login?error=invalid");
             return;

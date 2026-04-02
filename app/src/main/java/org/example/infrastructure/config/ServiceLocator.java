@@ -19,6 +19,7 @@ public class ServiceLocator {
     private final CreateUserCase CREATE_USER;
     private final RetrieveFeedCase RETRIEVE_FEED;
     private final LikeCase TOGGLE_LIKE;
+    private final CreateCommentCase CREATE_COMMENT;
     
     private ServiceLocator() {
         this.COMMENT_REPO = new CommentRepository();
@@ -31,7 +32,8 @@ public class ServiceLocator {
         this.CREATE_POST = new CreatePostCase(POST_REPO);
         this.CREATE_USER = new CreateUserCase(USER_REPO);
         this.RETRIEVE_FEED = new RetrieveFeedCase(POST_REPO);
-        this.TOGGLE_LIKE = new LikeCase(LIKE_REPO);
+        this.TOGGLE_LIKE = new LikeCase(LIKE_REPO, USER_REPO);
+        this.CREATE_COMMENT = new CreateCommentCase(COMMENT_REPO);
     }
 
     public static synchronized ServiceLocator getInstance() {
@@ -59,5 +61,9 @@ public class ServiceLocator {
 
     public LikeCase getToggleLikeCase() {
         return TOGGLE_LIKE;
+    }
+
+    public CreateCommentCase CreateCommentCase() {
+        return CREATE_COMMENT;
     }
 }

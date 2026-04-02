@@ -7,8 +7,13 @@ import java.util.Optional;
 import org.example.core.entities.Comment;
 import org.example.core.entities.Post;
 import org.example.core.entities.User;
+import org.example.core.repository.ICommentRepository;
+import org.example.core.repository.IFollowerRepository;
+import org.example.core.repository.ILikeRepository;
+import org.example.core.repository.IPostRepository;
+import org.example.infrastructure.config.ServiceLocator;
+import org.example.infrastructure.persistence.PostRepository;
 import org.example.presentation.dto.UserDTO;
-import org.example.util.A_TRIER_DataStore;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,71 +23,105 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/post-detail")
 public class PostDetailServlet extends HttpServlet {
+    
+    private final ServiceLocator sl = ServiceLocator.getInstance();
+    private ILikeRepository likeRepo;
+    private IPostRepository postRepo;
+    private ICommentRepository commentRepo;
+
+    private final String POST_DETAIL_PATH = "/WEB-INF/views/post_detail.jsp";
+
+    private final String LOGGED_USER = "loggedUser";
+    private final String USER = "userView";
+    private final String POST_ID = "postId";
+    private final String POST_SECTION = "post";
+    private final String COMMENTS_SETION = "comments";
+    private final String COMMENT_CONTENT = "content";
+
+    private Post getPostById(long postId) {
+        Optional<Post> maybePost = postRepo.getPostById(postId);
+        if(maybePost.isEmpty()) {
+            // req.getRequestDispatcher("/WEB-INF/views/post_detail.jsp").forward(req, resp);
+            return null;
+        } else {
+            return maybePost.get();
+        }
+    }
+
+    private long isOkayId (String id) throws NumberFormatException {
+        long postId = Long.parseLong(id);
+        return postId;
+    }
+
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-       User loggedUser = (User) req.getSession().getAttribute("loggedUser");
+        final User loggedUser = (User) req.getSession().getAttribute(LOGGED_USER);
+        final UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
 
-        UserDTO userView = new UserDTO(loggedUser.getUsername(), loggedUser.getEmail());
+        req.setAttribute(USER, userView);
 
-        req.setAttribute("user", userView);
-
-
-        String idParam = req.getParameter("id");
-        if (idParam == null || idParam.isBlank()) {
-            resp.sendRedirect(req.getContextPath() + "/feed");
-            return;
-        }
-
+        // POST ID VERIFICATION
         long postId;
         try {
-            postId = Long.parseLong(idParam);
+            postId = isOkayId(req.getParameter(POST_ID));
         } catch (NumberFormatException e) {
             resp.sendRedirect(req.getContextPath() + "/feed");
             return;
         }
 
-        PostRepository store = PostRepository.getInstance();
-        Optional<Post> postOpt = store.findPostById(postId);
-        if (postOpt.isEmpty()) {
-            resp.sendRedirect(req.getContextPath() + "/feed");
+        // POST VERIFICATION
+        Post post = getPostById(postId);
+        if (post  == null) {
+            resp.sendError(404, "post not found");
             return;
         }
 
-        Post post = postOpt.get();
-        post.setLikeCount(store.likeCount(post.getId()));
-        List<Comment> comments = store.getCommentsForPost(postId);
+        // COMMENTS RETRIEVING
+        post.setLikeCount(likeRepo.getLikes(post));
+        List<Comment> comments = commentRepo.getCommentsFromPost(post);
 
-        req.setAttribute("post", post);
-        req.setAttribute("comments", comments);
-        req.setAttribute("loggedUser", loggedUser);
-        req.getRequestDispatcher("/WEB-INF/views/post_detail.jsp").forward(req, resp);
+        req.setAttribute(POST_SECTION, post);
+        req.setAttribute(COMMENTS_SETION, comments);
+        req.setAttribute(LOGGED_USER, loggedUser);
+        req.getRequestDispatcher(POST_DETAIL_PATH).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        User loggedUser = (User) req.getSession().getAttribute("loggedUser");
+        // LOGIN VERIFICATION
+        User loggedUser = (User) req.getSession().getAttribute(LOGGED_USER);
         if (loggedUser == null) {
             resp.sendRedirect(req.getContextPath() + "/login");
             return;
         }
 
-        String idParam = req.getParameter("postId");
-        String content = req.getParameter("content");
-        if (content == null) {
-            content = req.getParameter("comment");
-        }
-        if (idParam == null || content == null || content.isBlank()) {
+        // POST ID VERIFICATION
+        long postId;
+        try {
+            postId = isOkayId(req.getParameter(POST_ID));
+        } catch (NumberFormatException e) {
             resp.sendRedirect(req.getContextPath() + "/feed");
             return;
         }
 
-        long postId = Long.parseLong(idParam);
-        A_TRIER_DataStore.getInstance().createComment(postId, loggedUser, content);
+        // POST VERIFICATION
+        Post post = getPostById(postId);
+        if (post  == null) {
+            resp.sendError(404, "post not found");
+            return;
+        }
+
+        // CONTENT VERIFICATION
+        String content = req.getParameter(COMMENT_CONTENT);
+        if (content == null) {
+            content = req.getParameter(COMMENTS_SETION);
+        }
+        
+        sl.CreateCommentCase().sendComment(post, loggedUser, content);
         resp.sendRedirect(req.getContextPath() + "/feed");
     }
 }

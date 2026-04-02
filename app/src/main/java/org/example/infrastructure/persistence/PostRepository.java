@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
 
 import org.example.core.entities.Post;
 import org.example.core.entities.User;
@@ -21,14 +20,17 @@ public class PostRepository implements IPostRepository{
         this.followerRepository = followerRepository;
     }
 
+    @Override
     public void addPost(Post post) {
         posts.add(post);
     }
 
+    @Override
     public void removePost(Post post) {
         posts.remove(post);
     }
 
+    @Override
     public List<Post> getPosts() {
         return posts;
     }
@@ -40,16 +42,16 @@ public class PostRepository implements IPostRepository{
     }
 
     @Override
-    public Optional<Post> findPostById(long id) {
+    public Optional<Post> getPostById(long id) {
         return posts.stream().filter(p -> p.getId() == id).findFirst();
     }
 
     @Override
-    public List<Post> getPostsFromUser() {
+    public List<Post> getPostsFrom(User user) {
         return posts.stream()
-                .filter(p -> !p.isDraft())
+                .filter(p -> !p.isDraft() && p.getOwner() == user)
                 .sorted(Comparator.comparing(Post::getCreatedAt).reversed())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
